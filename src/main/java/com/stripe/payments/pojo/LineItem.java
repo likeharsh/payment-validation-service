@@ -1,6 +1,7 @@
 package com.stripe.payments.pojo;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 import lombok.Data;
@@ -8,19 +9,21 @@ import lombok.Data;
 @Data
 public class LineItem {
 
-	@NotBlank(message = "currency must not be blank")
+    @NotBlank(message = "CURRENCY_REQUIRED")
     @Pattern(
         regexp = "^[a-zA-Z]{3}$",
-        message = "currency must be a valid 3-letter currency code"
+        message = "CURRENCY_INVALID"
     )
     private String currency;
 
-    @NotBlank(message = "productName must not be blank")
+    @NotBlank(message = "PRODUCT_NAME_REQUIRED")
     private String productName;
 
-    @Positive(message = "unitAmount must be greater than 0")
-    private int unitAmount;
+    @NotNull(message = "UNIT_AMOUNT_NULL")
+    @Positive(message = "UNIT_AMOUNT_INVALID")
+    private Integer unitAmount;
 
-    @Positive(message = "quantity must be greater than 0")
-    private int quantity;
+    @NotNull(message = "QUANTITY_NULL")
+    @Positive(message = "QUANTITY_INVALID")
+    private Integer quantity;
 }

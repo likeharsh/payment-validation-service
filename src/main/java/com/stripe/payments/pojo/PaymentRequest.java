@@ -11,21 +11,21 @@ import lombok.Data;
 @Data
 public class PaymentRequest {
 
-    @NotBlank(message = "successUrl must not be blank")
+    @NotBlank(message = "SUCCESS_URL_REQUIRED")
     @Pattern(
         regexp = "^(https?://).+$",
-        message = "successUrl must be a valid HTTP or HTTPS URL"
+        message = "SUCCESS_URL_INVALID"
     )
     private String successUrl;
 
-    @NotBlank(message = "cancelUrl must not be blank")
+    @NotBlank(message = "CANCEL_URL_REQUIRED")
     @Pattern(
         regexp = "^(https?://).+$",
-        message = "cancelUrl must be a valid HTTP or HTTPS URL"
+        message = "CANCEL_URL_INVALID"
     )
     private String cancelUrl;
 
-    @NotEmpty(message = "lineItems must contain at least one item")
+    @NotEmpty(message = "LINE_ITEMS_REQUIRED")
     @Valid
     private List<LineItem> lineItems;
 }

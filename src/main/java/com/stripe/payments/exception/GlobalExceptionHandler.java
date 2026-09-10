@@ -1,35 +1,35 @@
 package com.stripe.payments.exception;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import lombok.extern.slf4j.Slf4j;
+import com.stripe.payments.constant.ErrorCodeEnum;
+import com.stripe.payments.pojo.ErrorResponse;
 
 @RestControllerAdvice
-@Slf4j
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, String>> handleMethodArgumentNotValidException(
+    public ResponseEntity<ErrorResponse> handleValidationException(
             MethodArgumentNotValidException exception) {
-    	
-    	log.error("Validation error: {}", exception.getMessage());
-        Map<String, String> errors = new LinkedHashMap<>();
 
-        exception.getBindingResult()
+        String errorKey = exception.getBindingResult()
                 .getFieldErrors()
-                .forEach(error -> 
-                    errors.put(error.getField(), error.getDefaultMessage())
-                );
-        log.info("Validation errors: {}", errors);
+                .get(0)
+                .getDefaultMessage();
+
+        ErrorCodeEnum errorCodeEnum = ErrorCodeEnum.valueOf(errorKey);
+
+        ErrorResponse errorResponse = new ErrorResponse(
+                errorCodeEnum.getErrorCode(),
+                errorCodeEnum.getErrorMessage()
+        );
+
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(errors);
+                .body(errorResponse);
     }
 }

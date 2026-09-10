@@ -16,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 public class PaymentController {
 
 	@PostMapping
-	public String PaymentController( @Valid @RequestBody PaymentRequest paymentRequest) {
+	public String PaymentController(@Valid @RequestBody PaymentRequest paymentRequest) {
 		
 		log.info("Creating payment... PaymentRequest: {}", paymentRequest);
 		return "Payment created successfully PaymentRequest: " + paymentRequest;
